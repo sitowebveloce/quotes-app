@@ -50,7 +50,8 @@ router.get('/:id', (req, res) => {
             data = {
                 id: undefined,
                 quote: undefined,
-                author: undefined
+                author: undefined,
+                like: undefined
             }
         }
 
@@ -119,8 +120,8 @@ router.post('/update/:id', (req, res) => {
         // Define variables
         let quote = req.body.quote.replace(/['"]+/g, '');
         let author = req.body.author;
-        let like = +req.body.like
-            // Define the New quote
+        let like = +req.body.like;
+        // Define the New quote
         let newQuote = {
             id,
             quote,
@@ -139,9 +140,8 @@ router.post('/update/:id', (req, res) => {
 
         if (data.id !== id) {
             // RETURN
-            data = db.getData(`/quotes`);
             return res.status(200)
-                .redirect('/')
+                .redirect('/');
         }
         // ARRAY UPDATE
         // BY DEFAULT THE PUSH WILL OVERRIDE THE OLD VALUES
@@ -149,7 +149,7 @@ router.post('/update/:id', (req, res) => {
 
         // RETURN REDIRECT
         return res.status(200)
-            .redirect('/')
+            .redirect('/');
 
     } catch (error) {
         console.error(error);
