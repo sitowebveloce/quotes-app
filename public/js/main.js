@@ -29,8 +29,12 @@ data.forEach(q => {
 const like = async(id, quote, author, like) => {
     try {
         // CHECK LIKE LOCALSTORAGE 
-        let likes = localStorage.getItem('like');
-        if (likes < 1) {
+        let likes = JSON.parse(localStorage.getItem(`like-${id}`));
+        if (likes !== null) {
+            console.log(likes, id);
+        };
+
+        if (likes === null) {
             // Create object to fetch/send
             let likeObj = {
                 id,
@@ -48,13 +52,35 @@ const like = async(id, quote, author, like) => {
             // console.log(likeFetch);
 
             // Set local storage and session
-            localStorage.setItem('like', JSON.stringify(1));
+            localStorage.setItem(`like-${id}`, JSON.stringify({ id: id }));
+            sessionStorage.setItem('lastname', 'Anonymous');
+            // Reload
+            return window.location.reload();
+        } else if (likes.id === id) {
+            // Allert
+            alert(sessionStorage.getItem('lastname') + ' you have already liked it.');
+        } else if (likes.id !== id) {
+            // Create object to fetch/send
+            let likeObj = {
+                id,
+                quote,
+                author,
+                like: ++like
+            };
+            // Define url to fetch
+            let url = `http://localhost:3001/update/${id}`;
+            let likeFetch = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(likeObj),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            // console.log(likeFetch);
+
+            // Set local storage and session
+            localStorage.setItem(`like-${id}`, JSON.stringify({ id: id }));
             sessionStorage.setItem('lastname', 'Anonymous');
             // Reload
             window.location.reload();
-        } else {
-            // Allert
-            alert(sessionStorage.getItem('lastname') + ' you have already liked it.');
         }
 
     } catch (error) {
