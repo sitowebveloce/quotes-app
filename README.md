@@ -36,6 +36,9 @@ or *production*
 npm run start
 ```
 
+### Youtube guide part 1
+[Youtube part 1](https://youtu.be/o_8fDyCFGn4)
+
 ### License
 [MIT](https://choosealicense.com/licenses/mit/)
 
